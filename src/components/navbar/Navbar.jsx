@@ -1,13 +1,7 @@
-import NumResults from "./NumResults.jsx";
-import Search from "./Search.jsx";
-import Logo from "./Logo.jsx";
-
-export default function Navbar({movies}) {
+export default function Navbar({children}) {
     return(
         <nav className="nav-bar">
-            <Logo />
-            <Search />
-            <NumResults movies={movies}/>
+            {children}
         </nav>
     )
 }

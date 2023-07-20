@@ -1,11 +1,7 @@
-import SearchedMoviesBox from "./SearchedMoviesBox.jsx";
-import WatchedMoviesBox from "./WatchedMoviesBox.jsx";
-
-export default function Main({movies}) {
+export default function Main({children}) {
     return(
         <main className="main">
-            <SearchedMoviesBox movies={movies}/>
-            <WatchedMoviesBox />
+            {children}
         </main>
     )
 }
