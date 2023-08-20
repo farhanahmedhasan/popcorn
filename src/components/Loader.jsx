@@ -1,5 +1,5 @@
 export default function Loader() {
     return(
-        <p className='loading'>Loading...</p>
+        <p className='loader'>Loading...</p>
     )
 }
