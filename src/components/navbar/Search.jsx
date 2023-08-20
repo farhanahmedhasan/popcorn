@@ -1,17 +1,29 @@
 import {useEffect, useState} from "react";
 
 const key = "1965cdc6"
-export default function Search ({setMovies, setIsLoading}) {
-    const [query, setQuery] = useState("");
+export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
+    const [query, setQuery] = useState("Guardians");
 
     useEffect(()=> {
         async function getMovies(){
             setIsLoading(true)
-            const res = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${key}`)
-            const data = await res.json()
-            setMovies(data.Search)
-            setIsLoading(false)
-            console.log(data.Search)
+            try {
+                const res = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${key}`)
+                if(!res.ok) throw new Error("Something went wrong with fetching the movies")
+
+                const data = await res.json()
+                if (data.Response === "False") {
+                    throw new Error("Movie not found")
+                }
+
+                setMovies(data.Search)
+                setErrorMessage("")
+            }catch (err) {
+                setErrorMessage(err.message)
+            } finally {
+                setIsLoading(false)
+            }
+
         }
 
         getMovies()
