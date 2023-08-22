@@ -1,6 +1,6 @@
-export default function SearchedMovie({movie}) {
+export default function SearchedMovie({movie,onSelectMovie}) {
     return(
-        <li>
+        <li onClick={()=> onSelectMovie(movie.imdbID)}>
             <img src={movie.Poster} alt={`${movie.Title} poster`} />
             <h3>{movie.Title}</h3>
             <div>

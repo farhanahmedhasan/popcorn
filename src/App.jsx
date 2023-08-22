@@ -1,23 +1,32 @@
-import {useEffect, useState} from "react";
-import Main from "./components/main/Main";
-import Logo from "./components/navbar/Logo";
+import WatchedMoviesSummary from "./components/main/WatchedMoviesSummary";
+import SearchedMovieLists from "./components/main/SearchedMovieLists";
+import WatchedMoviesList from "./components/main/WatchedMoviesList";
+import SelectedMovie from "./components/main/SelectedMovie.jsx";
+import ErrorMessage from "./components/ErrorMessage.jsx";
+import NumResults from "./components/navbar/NumResults";
+import MoviesBox from "./components/main/MoviesBox";
 import Navbar from "./components/navbar/Navbar";
 import Search from "./components/navbar/Search";
-import MoviesBox from "./components/main/MoviesBox";
-import NumResults from "./components/navbar/NumResults";
-import WatchedMoviesList from "./components/main/WatchedMoviesList";
-import SearchedMovieLists from "./components/main/SearchedMovieLists";
-import WatchedMoviesSummary from "./components/main/WatchedMoviesSummary";
 import Loader from "./components/Loader.jsx";
-import ErrorMessage from "./components/ErrorMessage.jsx";
-
-
+import Logo from "./components/navbar/Logo";
+import Main from "./components/main/Main";
+import {useState} from "react";
 
 export default function App() {
     const [movies, setMovies] = useState([]);
-    const [watched, setWatched] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
+    const [selectedId, setSelectedId] = useState(null)
+    const [watched, setWatched] = useState([]);
+
+    function handleSelectMovie(id) {
+        setSelectedId(prev => prev === id ? null : id)
+    }
+
+    function handleCloseMovie(){
+        setSelectedId(null)
+    }
 
     return (
         <>
@@ -28,13 +37,17 @@ export default function App() {
             </Navbar>
             <Main>
                 <MoviesBox>
-                    {(!isLoading && !errorMessage) && <SearchedMovieLists movies={movies}/>}
+                    {(!isLoading && !errorMessage) && <SearchedMovieLists movies={movies} onSelectMovie={handleSelectMovie}/>}
                     {isLoading && <Loader />}
                     {(errorMessage && !isLoading) && <ErrorMessage message={errorMessage} />}
                 </MoviesBox>
                 <MoviesBox>
-                    <WatchedMoviesSummary watched={watched}/>
-                    <WatchedMoviesList watched={watched}/>
+                    {selectedId ? <SelectedMovie selectedId={selectedId} onCloseMovie={handleCloseMovie}/> :
+                        <>
+                            <WatchedMoviesSummary watched={watched}/>
+                            <WatchedMoviesList watched={watched}/>
+                        </>
+                    }
                 </MoviesBox>
             </Main>
         </>
