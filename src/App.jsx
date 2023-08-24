@@ -28,6 +28,23 @@ export default function App() {
         setSelectedId(null)
     }
 
+    function getWatchedMovieStats() {
+        const alreadyWatchedMovie = watched.find(movie => movie.imdbID === selectedId)
+        const isAlreadyWatched = !!alreadyWatchedMovie;
+
+        const alreadyWatchedMovieRating = alreadyWatchedMovie?.userRating
+
+        return [isAlreadyWatched, alreadyWatchedMovieRating]
+    }
+
+    function handleAddWatch(movie){
+        setWatched(movies=> [...movies, movie])
+    }
+
+    function handleRemoveWatch(id){
+        setWatched(watched=> watched.filter(movie=> movie.imdbID !== id))
+    }
+
     return (
         <>
             <Navbar>
@@ -42,7 +59,15 @@ export default function App() {
                     {(errorMessage && !isLoading) && <ErrorMessage message={errorMessage} />}
                 </MoviesBox>
                 <MoviesBox>
-                    {selectedId ? <SelectedMovie selectedId={selectedId} onCloseMovie={handleCloseMovie}/> :
+                    {selectedId ?
+                        <SelectedMovie
+                            selectedId={selectedId}
+                            getWatchedMovieStats={getWatchedMovieStats}
+                            onCloseMovie={handleCloseMovie}
+                            onAddWatched={handleAddWatch}
+                            onRemoveWatch={handleRemoveWatch}
+                        />
+                        :
                         <>
                             <WatchedMoviesSummary watched={watched}/>
                             <WatchedMoviesList watched={watched}/>
