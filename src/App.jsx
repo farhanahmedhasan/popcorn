@@ -65,12 +65,11 @@ export default function App() {
                             getWatchedMovieStats={getWatchedMovieStats}
                             onCloseMovie={handleCloseMovie}
                             onAddWatched={handleAddWatch}
-                            onRemoveWatch={handleRemoveWatch}
                         />
                         :
                         <>
                             <WatchedMoviesSummary watched={watched}/>
-                            <WatchedMoviesList watched={watched}/>
+                            <WatchedMoviesList watched={watched} onRemoveWatched={handleRemoveWatch}/>
                         </>
                     }
                 </MoviesBox>
