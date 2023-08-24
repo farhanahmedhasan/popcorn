@@ -42,6 +42,16 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
         }
         fetchSingleMovie()
     },[selectedId])
+
+    useEffect(()=> {
+        if(!title) return
+        document.title = `Movie: ${title}`
+
+        return ()=> {
+            document.title = "usePopcorn"
+        }
+    },[title,selectedId])
+
     return(
         <div className="details">
             {isLoading ? <Loader /> :
