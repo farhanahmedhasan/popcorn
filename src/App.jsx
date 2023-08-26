@@ -10,7 +10,7 @@ import Search from "./components/navbar/Search";
 import Loader from "./components/Loader.jsx";
 import Logo from "./components/navbar/Logo";
 import Main from "./components/main/Main";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function App() {
     const [movies, setMovies] = useState([]);

@@ -58,6 +58,16 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
         }
     },[title,selectedId])
 
+    useEffect(()=> {
+        const callback = (e)=> {
+            if(e.code === "Escape") onCloseMovie()
+        }
+
+        document.addEventListener('keydown', callback)
+
+        return ()=> document.removeEventListener('keydown', callback)
+    },[onCloseMovie])
+
     return(
         <div className="details">
             {isLoading ? <Loader /> :
