@@ -2,13 +2,13 @@ import {useEffect, useState} from "react";
 
 const key = "1965cdc6"
 export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
-    const [query, setQuery] = useState("Guardians");
+    const [query, setQuery] = useState("");
 
     useEffect(()=> {
 
         if(query.length < 3) {
             setMovies([])
-            setErrorMessage("Type atleast 3 character to fetch movies")
+            setErrorMessage("Type at least 3 character to fetch movies")
             return
         }
 
@@ -33,6 +33,7 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
             }catch (err) {
                 if(err.name !== "AbortError"){
                     setErrorMessage(err.message)
+                    console.log(err)
                 }
             } finally {
                 setIsLoading(false)

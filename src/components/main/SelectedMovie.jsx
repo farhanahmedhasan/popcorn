@@ -28,13 +28,10 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
     }
 
     useEffect(()=>{
-
-        const controller = new AbortController()
-        const signal = controller.signal
         async function fetchSingleMovie() {
             setIsLoading(true)
             try {
-                const res = await fetch(`http://www.omdbapi.com/?i=${selectedId}&apikey=${key}`, {signal})
+                const res = await fetch(`http://www.omdbapi.com/?i=${selectedId}&apikey=${key}`)
                 const movie = await res.json()
                 setMovie(movie)
             }catch (err){
@@ -44,8 +41,6 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
             }
         }
         fetchSingleMovie()
-
-        return ()=> controller.abort()
 
     },[selectedId])
 
