@@ -12,11 +12,14 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
             return
         }
 
+        const controller = new AbortController()
+        const signal = controller.signal
+
         async function getMovies(){
             setIsLoading(true)
             setErrorMessage("")
             try {
-                const res = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${key}`)
+                const res = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${key}`, {signal})
                 if(!res.ok) throw new Error("Something went wrong with fetching the movies")
 
                 const data = await res.json()
@@ -26,15 +29,18 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
                 }
 
                 setMovies(data.Search)
+                setErrorMessage("")
             }catch (err) {
-                setErrorMessage(err.message)
+                if(err.name !== "AbortError"){
+                    setErrorMessage(err.message)
+                }
             } finally {
                 setIsLoading(false)
             }
-
         }
-
         getMovies()
+
+        return ()=> controller.abort()
 
     }, [query])
 
