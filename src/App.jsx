@@ -18,7 +18,7 @@ export default function App() {
     const [errorMessage, setErrorMessage] = useState("")
 
     const [selectedId, setSelectedId] = useState(null)
-    const [watched, setWatched] = useState([]);
+    const [watched, setWatched] = useState(()=> localStorage.getItem('watchedMovie') ? JSON.parse(localStorage.getItem('watchedMovie')) : [])
 
     function handleSelectMovie(id) {
         setSelectedId(prev => prev === id ? null : id)
@@ -44,6 +44,10 @@ export default function App() {
     function handleRemoveWatch(id){
         setWatched(watched=> watched.filter(movie=> movie.imdbID !== id))
     }
+
+    useEffect(()=>{
+        localStorage.setItem("watchedMovie", JSON.stringify(watched))
+    }, [watched])
 
     return (
         <>
