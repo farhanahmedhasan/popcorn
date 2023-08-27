@@ -39,9 +39,15 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
                 setIsLoading(false)
             }
         }
-        getMovies()
 
-        return ()=> controller.abort()
+        const timer = setTimeout(()=>{
+            getMovies()
+        },300)
+
+        return ()=> {
+            controller.abort()
+            clearTimeout(timer)
+        }
 
     }, [query])
 
