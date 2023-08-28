@@ -18,7 +18,7 @@ export default function App() {
     const [query, setQuery] = useState("");
     const [selectedId, setSelectedId] = useState(null)
 
-    const [data,setData] = useLocalStorage("watchedMovie", [])
+    const [watched, setWatched] = useLocalStorage("watchedMovie", [])
     const {data: movies, isLoading, errorMessage} = useMovies(query);
 
     function handleSelectMovie(id) {
@@ -30,7 +30,7 @@ export default function App() {
     }
 
     function getWatchedMovieStats() {
-        const alreadyWatchedMovie = data.find(movie => movie.imdbID === selectedId)
+        const alreadyWatchedMovie = watched.find(movie => movie.imdbID === selectedId)
         const isAlreadyWatched = !!alreadyWatchedMovie;
 
         const alreadyWatchedMovieRating = alreadyWatchedMovie?.userRating
@@ -39,11 +39,11 @@ export default function App() {
     }
 
     function handleAddWatch(movie){
-        setData(movies=> [...movies, movie])
+        setWatched(movies=> [...movies, movie])
     }
 
     function handleRemoveWatch(id){
-        setData(watched=> watched.filter(movie=> movie.imdbID !== id))
+        setWatched(watched=> watched.filter(movie=> movie.imdbID !== id))
     }
 
     return (
@@ -69,8 +69,8 @@ export default function App() {
                         />
                         :
                         <>
-                            <WatchedMoviesSummary watched={data}/>
-                            <WatchedMoviesList watched={data} onRemoveWatched={handleRemoveWatch}/>
+                            <WatchedMoviesSummary watched={watched}/>
+                            <WatchedMoviesList watched={watched} onRemoveWatched={handleRemoveWatch}/>
                         </>
                     }
                 </MoviesBox>
