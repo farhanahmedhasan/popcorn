@@ -12,14 +12,14 @@ import Loader from "./components/Loader.jsx";
 import Logo from "./components/navbar/Logo";
 import Main from "./components/main/Main";
 import {useState} from "react";
+import useMovies from "./hooks/useMovies.js";
 
 export default function App() {
-    const [movies, setMovies] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("")
-
+    const [query, setQuery] = useState("");
     const [selectedId, setSelectedId] = useState(null)
+
     const [data,setData] = useLocalStorage("watchedMovie", [])
+    const {data: movies, isLoading, errorMessage} = useMovies(query);
 
     function handleSelectMovie(id) {
         setSelectedId(prev => prev === id ? null : id)
@@ -50,7 +50,7 @@ export default function App() {
         <>
             <Navbar>
                 <Logo />
-                <Search setMovies={setMovies} setIsLoading={setIsLoading} setErrorMessage={setErrorMessage}/>
+                <Search query={query} setQuery={setQuery}/>
                 <NumResults movies={movies}/>
             </Navbar>
             <Main>
