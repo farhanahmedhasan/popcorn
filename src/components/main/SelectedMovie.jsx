@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import StarRating from "../StarRating.jsx";
 import Loader from "../Loader.jsx";
 
@@ -7,6 +7,7 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
     const [movie, setMovie] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [userRating, setUserRating] = useState("")
+    const countRef = useRef(0)
 
     const [isAlreadyWatched, alreadyWatchedMovieRating] = getWatchedMovieStats()
 
@@ -21,7 +22,8 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
             poster,
             imdbRating: Number(imdbRating),
             userRating,
-            runtime : Number(runtime.split(" ").at(0))
+            runtime : Number(runtime.split(" ").at(0)),
+            ratingDecision : countRef.current
         }
         onAddWatched(newWatchedMovie)
         onCloseMovie()
@@ -62,6 +64,10 @@ export default function SelectedMovie({selectedId, onCloseMovie, onAddWatched, g
 
         return ()=> document.removeEventListener('keydown', callback)
     },[onCloseMovie])
+
+    useEffect(()=> {
+        if(userRating) countRef.current++
+    }, [userRating])
 
     return(
         <div className="details">
