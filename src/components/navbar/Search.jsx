@@ -1,8 +1,9 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const key = "1965cdc6"
 export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
     const [query, setQuery] = useState("");
+    const inputRef = useRef(null)
 
     useEffect(()=> {
 
@@ -51,11 +52,16 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
 
     }, [query])
 
+    useEffect(()=>{
+        inputRef.current.focus()
+    },[])
+
     return(
         <input
             className="search"
             type="text"
             placeholder="Search movies..."
+            ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
         />
