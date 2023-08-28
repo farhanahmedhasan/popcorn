@@ -52,8 +52,20 @@ export default function Search ({setMovies, setIsLoading, setErrorMessage}) {
 
     }, [query])
 
-    useEffect(()=>{
-        inputRef.current.focus()
+    useEffect(()=> {
+        function callback(e){
+            if(document.activeElement === inputRef.current) return
+
+            if(e.code === "Enter") {
+                inputRef.current.focus()
+                setQuery("")
+            }
+        }
+
+        document.addEventListener('keydown', callback)
+
+        return ()=> document.removeEventListener("keydown",callback)
+
     },[])
 
     return(
